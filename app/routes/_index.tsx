@@ -23,7 +23,7 @@ export default function Index() {
 						href="https://remix.run/start/quickstart"
 						rel="noreferrer"
 					>
-						5m Quick Start
+						<Button color="primary">5m Quick Start</Button>
 					</a>
 				</li>
 				<li>
@@ -33,7 +33,7 @@ export default function Index() {
 						href="https://remix.run/start/tutorial"
 						rel="noreferrer"
 					>
-						30m Tutorial
+						<Button color="primary">30m Tutorial</Button>
 					</a>
 				</li>
 				<li>
@@ -43,7 +43,7 @@ export default function Index() {
 						href="https://remix.run/docs"
 						rel="noreferrer"
 					>
-						Remix Docs
+						<Button color="primary">Remix Docs</Button>
 					</a>
 				</li>
 			</ul>
