@@ -1,52 +1,65 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Button } from "@nextui-org/react";
+import { json, LoaderFunction } from "@remix-run/node";
+import { Button, Table, Tag } from "antd";
+import type { TableProps } from "antd";
+import { Post, PrismaClient } from "@prisma/client";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: "New Remix App" },
-		{ name: "description", content: "Welcome to Remix!" },
+		{ title: "LPR Dashboard" },
+		{ name: "description", content: "LPR Dashbord by EyeTech" },
 	];
+};
+export const loader: LoaderFunction = async () => {
+	const prisma = new PrismaClient();
+	const devices = await prisma.devices.findMany();
+	return json(devices);
 };
 
 export default function Index() {
+	const devices = useLoaderData<Post[]>();
+	const navigate = useNavigate();
+	const columns: TableProps<Post>["columns"] = [
+		{ title: "シリアル番号", dataIndex: "serial", key: "serial", width: 200 },
+		{
+			title: "ステータス",
+			dataIndex: "status",
+			key: "status",
+			width: 100,
+			render: (r) => (
+				<>
+					{" "}
+					{r === 0 ? (
+						<Tag color="red">停止</Tag>
+					) : r === 1 ? (
+						<Tag color="green">稼働中</Tag>
+					) : null}{" "}
+				</>
+			),
+		},
+		{ title: "カメラ名称", dataIndex: "name", key: "name" },
+	];
+	// console.log(devices);
 	return (
 		<div className="font-sans p-4">
-			<h1>Welcome to Remix!!!</h1>
-			<Button color="primary">
+			<Button>
 				<i className="ri-admin-line ri-lg" /> Button
 			</Button>
-			<ul className="list-disc mt-4 pl-6 space-y-2">
-				<li>
-					<a
-						className="text-blue-700 underline visited:text-purple-900"
-						target="_blank"
-						href="https://remix.run/start/quickstart"
-						rel="noreferrer"
-					>
-						<Button color="primary">5m Quick Start</Button>
-					</a>
-				</li>
-				<li>
-					<a
-						className="text-blue-700 underline visited:text-purple-900"
-						target="_blank"
-						href="https://remix.run/start/tutorial"
-						rel="noreferrer"
-					>
-						<Button color="primary">30m Tutorial</Button>
-					</a>
-				</li>
-				<li>
-					<a
-						className="text-blue-700 underline visited:text-purple-900"
-						target="_blank"
-						href="https://remix.run/docs"
-						rel="noreferrer"
-					>
-						<Button color="primary">Remix Docs</Button>
-					</a>
-				</li>
-			</ul>
+			<Table
+				dataSource={devices}
+				columns={columns}
+				size="small"
+				rowKey="id"
+				onRow={(record, rowIndex) => {
+					return {
+						onClick: () => {
+							console.log(record, rowIndex);
+							navigate(`/device/${record.serial}`);
+						},
+					};
+				}}
+			/>
 		</div>
 	);
 }

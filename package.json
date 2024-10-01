@@ -5,16 +5,20 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
+    "db:migrate": "npx prisma migrate dev",
+    "db:migrate:reset": "npx prisma migrate reset --force",
     "dev": "remix vite:dev --open",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.4.6",
+    "@prisma/client": "^5.19.1",
     "@remix-run/node": "^2.12.0",
     "@remix-run/react": "^2.12.0",
     "@remix-run/serve": "^2.12.0",
+    "antd": "^5.21.2",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.5.4",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
@@ -42,5 +46,8 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "prisma": {
+    "seed": "bun run prisma/seeds.ts"
   }
 }

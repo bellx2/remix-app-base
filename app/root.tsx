@@ -6,7 +6,6 @@ import {
 	ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
-import { NextUIProvider } from "@nextui-org/react";
 import "remixicon/fonts/remixicon.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -28,9 +27,5 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return (
-		<NextUIProvider>
-			<Outlet />
-		</NextUIProvider>
-	);
+	return <Outlet />;
 }
